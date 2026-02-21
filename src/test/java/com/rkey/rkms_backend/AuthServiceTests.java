@@ -71,7 +71,7 @@ public class AuthServiceTests {
     }
 
     @Test
-    @DisplayName("Should return true if passwords are matching")
+    @DisplayName("Should return false if passwords DO NOT match")
     void validatePasswords_WrongPasswordScenerio(){
         String email = "roei1576@gmail.com";
         String password = "roeiPassword";
