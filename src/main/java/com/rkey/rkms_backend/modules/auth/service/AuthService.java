@@ -9,7 +9,6 @@ import com.rkey.rkms_backend.modules.auth.entity.UserEntity;
 import com.rkey.rkms_backend.modules.auth.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,6 +41,22 @@ public class AuthService {
             log.error("Failed to save user in DB. Email: {}",dto.email());
             return false;
         }
+    }
+
+    @Transactional
+    public boolean isPaswordValid(String email, String password){
+        UserEntity user = userRepository.findByEmail(email).orElseThrow(()-> new RuntimeException("User not found."));
+        boolean isMatch = passwordEncoder.matches(password, user.getEncodedPassword());
+
+        if(isMatch){
+            log.info("Passwords are matching.");
+            return true;
+        }
+        else{
+            log.warn("Passwords don't match.");
+            return false;
+        }
+
     }
 
 }
