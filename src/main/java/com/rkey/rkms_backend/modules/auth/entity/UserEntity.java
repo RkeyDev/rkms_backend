@@ -52,8 +52,8 @@ public class UserEntity {
     private String email;
 
     @ToString.Exclude
-    @Column(name = "encrypted_password", nullable = false)
-    private String encryptedPassword;
+    @Column(name = "encoded_password", nullable = false)
+    private String encodedPassword;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
