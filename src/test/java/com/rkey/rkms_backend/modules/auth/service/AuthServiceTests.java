@@ -85,7 +85,7 @@ public class AuthServiceTests {
     void loginUser_SuccessScenario() {
         // Arrange
         String email = "roei@gmail.com";
-        String rawPassword = "pitiLevy";
+        String rawPassword = "password22321";
         String encodedPassword = "encodedPitiLevy";
         UserLoginDTO dto = new UserLoginDTO(email, rawPassword);
 
@@ -108,7 +108,7 @@ public class AuthServiceTests {
     void loginUser_LockedAccount_ReturnsEmpty() {
         // Arrange
         String email = "locked@gmail.com";
-        UserLoginDTO dto = new UserLoginDTO(email, "anyPassword");
+        UserLoginDTO dto = new UserLoginDTO(email, "Password3223");
         UserEntity user = createMockUser(email, "secret");
         user.setLocked(true);
 
