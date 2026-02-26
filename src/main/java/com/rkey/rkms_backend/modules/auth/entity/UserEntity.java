@@ -55,6 +55,12 @@ public class UserEntity {
     @Column(name = "encoded_password", nullable = false)
     private String encodedPassword;
 
+    @Column(name="is_locked", nullable=false)
+    private boolean isLocked;
+
+    @Column(name="unlock_id", nullable=false)
+    private UUID unlockId;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -65,9 +71,15 @@ public class UserEntity {
 
     @PrePersist
     protected void onCreate() {
-        if (this.publicId == null) {
+        if (this.publicId == null) 
             this.publicId = UUID.randomUUID();
-        }
+        
+
+        if (this.unlockId == null)
+            this.unlockId = UUID.randomUUID();
+
+        this.isLocked = true; /* Flag new accounts as locked.
+                            New accounts are locked until verified via email*/
     }
 
     @Override

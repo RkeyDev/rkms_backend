@@ -12,6 +12,8 @@ import jakarta.validation.constraints.Size;
     confirmPasswordField = "confirmPassword", 
     message = "Passwords must match"
 )
+
+//DTO to send login request to server
 public record UserLoginDTO(
     @NotBlank(message = "Email must be filled")
     @Email(message = "Must be a valid email structure")
