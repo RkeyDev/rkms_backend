@@ -2,14 +2,13 @@ package com.rkey.rkms_backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
+@ActiveProfiles("test") 
 class RkmsBackendApplicationTests {
 
     @Test
     void contextLoads() {
-        // This test will now pass because it will use the 
-        // PasswordEncoder from your real SecurityConfig
     }
-
 }
