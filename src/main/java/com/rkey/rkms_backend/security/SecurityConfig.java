@@ -20,10 +20,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // This will appear in 'docker logs' if the bean is loaded
+        System.out.println("CRITICAL: Custom Security Config Loaded Successfully!"); 
+        
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                
                 .requestMatchers("/api/v1/auth/**").permitAll() 
                 .anyRequest().authenticated()
             );
