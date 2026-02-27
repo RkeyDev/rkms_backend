@@ -1,5 +1,5 @@
-services:
-  db:
+services:      
+  db:         
     image: postgres:16-alpine
     environment:
       - POSTGRES_DB=${DB_NAME}
@@ -8,8 +8,8 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-app:
-    build: . 
+  app:         
+    build: .  
     image: ${DOCKERHUB_USERNAME}/springboot-app:latest
     ports:
       - "8080:8080"
@@ -17,10 +17,9 @@ app:
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
-      # Tell the app the DB is at the hostname 'db'
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${DB_NAME}
     depends_on:
       - db
 
-volumes:
+volumes:       
   pgdata:
