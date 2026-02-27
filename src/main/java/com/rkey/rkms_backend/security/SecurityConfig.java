@@ -21,12 +21,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            // Disable CSRF for development (makes testing with curl/Postman easier)
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                // Allow anyone to access the registration endpoint
-                .requestMatchers("/register", "/register/**").permitAll()
-                // Everything else requires a login
+                
+                .requestMatchers("/api/v1/auth/**").permitAll() 
                 .anyRequest().authenticated()
             );
         
