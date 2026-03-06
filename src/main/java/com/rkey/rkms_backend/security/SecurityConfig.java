@@ -29,14 +29,13 @@ public class SecurityConfig {
         System.out.println("CRITICAL: Custom Security Config Loaded Successfully!"); 
         
         http
-            // Enable CORS using the corsConfigurationSource bean defined below.
-            // This ensures the CorsFilter processes requests before the authorization filter.
+            // Hook in our custom CORS configuration source defined below
             .cors(Customizer.withDefaults()) 
             
-            // Keep CSRF disabled for stateless REST APIs
+            // CSRF remains disabled for token-based/stateless REST APIs
             .csrf(AbstractHttpConfigurer::disable)
             
-            // Configure authorization
+            // Endpoint authorization mapping
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/v1/auth/**").permitAll() 
                 .anyRequest().authenticated()
@@ -47,16 +46,24 @@ public class SecurityConfig {
 
     /**
      * Global CORS configuration mapped directly into Spring Security.
-     * This handles browser preflight (OPTIONS) requests correctly.
+     * Handles browser preflight (OPTIONS) requests safely.
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // In a production environment, this should be injected via @Value from application.yml
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        // TODO: For production, externalize these values to application.yml via @Value
+        // Added 5174 to handle Vite's automatic port incrementing during local dev
+        configuration.setAllowedOrigins(List.of(
+            "http://localhost:5173", 
+            "http://localhost:5174",
+            "http://localhost:3000"
+        ));
+        
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
+        
+        // Required when the frontend uses withCredentials: true
         configuration.setAllowCredentials(true);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
