@@ -8,6 +8,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,18 +27,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        System.out.println("CRITICAL: Custom Security Config Loaded Successfully!"); 
-        
         http
-            // Hook in our custom CORS configuration source defined below
-            .cors(Customizer.withDefaults()) 
-            
-            // CSRF remains disabled for token-based/stateless REST APIs
+            .cors(Customizer.withDefaults())
             .csrf(AbstractHttpConfigurer::disable)
-            
-            // Endpoint authorization mapping
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+                // Explicitly permit OPTIONS for all (Standard industry practice)
+                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+                // Permit your auth endpoints
                 .requestMatchers("/api/v1/auth/**").permitAll() 
+                // Everything else requires a token
                 .anyRequest().authenticated()
             );
         
