@@ -52,13 +52,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // TODO: For production, externalize these values to application.yml via @Value
-        // Added 5174 to handle Vite's automatic port incrementing during local dev
-        configuration.setAllowedOrigins(List.of(
-            "http://localhost:5173", 
-            "http://localhost:5174",
-            "http://localhost:3000"
-        ));
+        // TODO: For production, externalize value to application.yml via @Value
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:5173"));
         
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
