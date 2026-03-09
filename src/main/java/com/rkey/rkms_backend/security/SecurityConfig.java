@@ -51,10 +51,11 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // TODO: For production, externalize value to application.yml via @Value
-        configuration.setAllowedOriginPatterns(List.of(
-            "http://localhost:[*]",
-            "http://127.0.0.1:[*]"
+        // Allow the dev frontend running on 5173 / 5174 to call this backend.
+        // NOTE: Spring does not allow "*" with allowCredentials=true, so list concrete origins.
+        configuration.setAllowedOrigins(List.of(
+            "http://localhost:5173",
+            "http://localhost:5174"
         ));
         
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
@@ -64,8 +65,8 @@ public class SecurityConfig {
         configuration.setAllowCredentials(true);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // Apply this CORS config to all API endpoints
-        source.registerCorsConfiguration("/api/**", configuration); 
+        // Apply this CORS config to all endpoints
+        source.registerCorsConfiguration("/**", configuration);
         
         return source;
     }

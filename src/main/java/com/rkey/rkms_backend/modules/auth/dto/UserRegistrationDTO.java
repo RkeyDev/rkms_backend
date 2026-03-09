@@ -15,6 +15,9 @@ public record UserRegistrationDTO(
     @Email(message = "Must be a valid email structure")
     String email,
 
+    @NotBlank(message = "Company name is required")
+    String companyName,
+
     @NotBlank(message = "Password must be filled")
     @Size(min=8, message="Password must be at least 8 characters long")
     String password,
